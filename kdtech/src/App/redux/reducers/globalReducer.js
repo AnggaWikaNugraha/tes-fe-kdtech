@@ -3,9 +3,9 @@ import Type from '../type/globalReducer';
 const StatusPageState = {
   isAuthenticated: true,
           token: '79854yh3434329343rhd',
-          email: 'angga@gmail.com',
-          role: 'user',
-          name: 'angga',
+          email: 'admin@gmail.com',
+          role: 'admin',
+          name: 'gani',
 };
 /* 
 conto action
@@ -36,6 +36,21 @@ export function StatusPageReducer(state = StatusPageState, action) {
       return { ...state, [action.payload.indexKey]: action.payloadd.valueKey };
     case Type.STATUS_PAGE_RESET_ALL:
       return StatusPageState;
+    default:
+      return state;
+  }
+}
+
+const StatusModal = {
+  modal: false,
+};
+
+export function StatusModalReducer(state = StatusModal, action) {
+  switch (action.type) {
+    case Type.SET_MODAL_UP:
+      return { ...state, modal: true };
+    case Type.SET_MODAL_CLOSED:
+      return { ...state, modal: false };
     default:
       return state;
   }

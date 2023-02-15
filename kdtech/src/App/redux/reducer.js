@@ -1,5 +1,6 @@
 import {
   StatusPageReducer,
+  StatusModalReducer,
 } from '../redux/reducers/globalReducer';
 import {
   BarangReducer,
@@ -9,4 +10,5 @@ import {
 export default {
   StatusPageReducer,
   BarangReducer,
+  StatusModalReducer,
 };
