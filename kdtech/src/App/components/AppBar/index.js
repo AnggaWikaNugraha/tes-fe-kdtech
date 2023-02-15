@@ -28,7 +28,7 @@ const AppBarWrapper = ({
     >
       <Toolbar>
         <IconButton
-          color="inherit"
+          color="black"
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
