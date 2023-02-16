@@ -7,7 +7,9 @@ export default {
 
   SET_BARANG: 'SET_BARANG',
   ADD_BARANG: 'ADD_BARANG',
-  
+
   SET_MODAL_UP: 'SET_MODAL_UP',
   SET_MODAL_CLOSED: 'SET_MODAL_CLOSED',
+
+  ADD_CART: 'ADD_CART',
 };

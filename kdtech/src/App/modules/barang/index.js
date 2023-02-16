@@ -14,7 +14,9 @@ import { barang } from "../../dummyData";
 import { Box, Button, TextField } from "@mui/material";
 import Modal from "../../components/Modal";
 
+
 const columns = [
+  { id: "kode", label: "Kode", minWidth: 170 },
   { id: "name", label: "Name", minWidth: 170 },
   { id: "harga", label: "harga", minWidth: 170 },
   { id: "ukuran", label: "ukuran", minWidth: 170 },
@@ -24,6 +26,7 @@ const columns = [
 
 const Barang = () => {
   const [page, setPage] = React.useState(0);
+  const [typeModal, setTypeModal] = React.useState('')
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const dispatch = useDispatch();
   const stateBarang = useSelector((state) => state.BarangReducer);
@@ -39,6 +42,7 @@ const Barang = () => {
   };
 
   const handleClose = () => {
+    setTypeModal('')
     dispatch({
       type: Type.SET_MODAL_CLOSED,
     });
@@ -61,17 +65,19 @@ const Barang = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const newData = {
+      kode: data.get('kode'),
       name: data.get('name'),
       harga: Number(data.get('harga')),
       ukuran: data.get('ukuran'),
       android: data.get('android'),
     }
-    console.log(newData);
-    dispatch({
-      type: Type.ADD_BARANG,
-      barang: newData
-    })
-    handleClose()
+    if (data.get('kode')) {
+      dispatch({
+        type: Type.ADD_BARANG,
+        barang: newData
+      })
+      handleClose()
+    }
   }
 
   return (
@@ -79,7 +85,10 @@ const Barang = () => {
       <h2>Daftar Barang</h2>
       {StatusPageReducer.role === "admin" && (
         <Button
-          onClick={handleOpen}
+          onClick={() => {
+            setTypeModal('addBarang')
+            handleOpen();
+          }}
           style={{
             marginBottom: "20px",
           }}
@@ -89,7 +98,7 @@ const Barang = () => {
         </Button>
       )}
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 640 }}>
+        <TableContainer sx={{ maxHeight: 540 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -119,7 +128,10 @@ const Barang = () => {
                         if (column.label === "action") {
                           return (
                             <TableCell>
-                              <Button variant="contained">Beli</Button>
+                              <Button onClick={() => {
+                                setTypeModal('addCart')
+                                handleOpen();
+                              }} variant="contained">Beli</Button>
                             </TableCell>
                           );
                         }
@@ -150,7 +162,18 @@ const Barang = () => {
       </Paper>
 
       <Modal handleClose={handleClose} handleOpen={handleOpen}>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        {
+          typeModal === 'addBarang' && <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="kode"
+            label="kode"
+            name="kode"
+            autoComplete="kode"
+            autoFocus
+          />
           <TextField
             margin="normal"
             required
@@ -201,6 +224,31 @@ const Barang = () => {
             Submit
           </Button>
         </Box>
+        }
+        {
+          typeModal === 'addCart' && <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="quantity"
+            label="quantity"
+            name="quantity"
+            autoComplete="quantity"
+            autoFocus
+            type='number'
+            defaultValue={1}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Submit
+          </Button>
+        </Box>
+        }
       </Modal>
     </Wrapper>
   );
